@@ -1,0 +1,7 @@
+# Note that, now that you have already performed simulations with them, creating
+# new models, you no longer need to explicitly include certain of the HELIX 
+# inputs.
+
+stepwise -s farna_rebuild3.out.1.pdb farna_rebuild2.out.1.pdb swm_rebuild1.out.1.pdb HELIX4.pdb HELIX5.pdb HELIX8.pdb -native 4L81.pdb -fasta target.fasta -save_times -motif_mode -allow_complex_loop_graph true -superimpose_over_all -cycles 2000 -nstruct 5000 -use_legacy_stepwise_job_distributor true -score:weights stepwise/rna/rna_res_level_energy4.wts -restore_talaris_behavior -out:file:silent swm_rebuild_final.out
+
+

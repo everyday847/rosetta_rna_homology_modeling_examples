@@ -1,0 +1,31 @@
+# Generate all helices using Rosetta's rna_tools scripts.
+
+rna_helix.py -o HELIX2.pdb -seq ggg ccc
+renumber_pdb_in_place.py HELIX2.pdb A:11-13 A:18-20
+
+rna_helix.py -o HELIX4.pdb -seq u a
+renumber_pdb_in_place.py HELIX4.pdb A:29 A:44
+
+rna_helix.py -o HELIX5.pdb -seq ggg ccc
+renumber_pdb_in_place.py HELIX5.pdb A:30-32 A:40-42
+
+rna_helix.py -o HELIX6.pdb -seq caccg cggug
+renumber_pdb_in_place.py HELIX6.pdb A:53-57 A:62-66
+
+rna_helix.py -o HELIX7.pdb -seq gccc gggc
+renumber_pdb_in_place.py HELIX7.pdb A:73-76 A:81-84
+
+rna_helix.py -o HELIX8.pdb -seq cgga uccg
+renumber_pdb_in_place.py HELIX8.pdb A:34-37 A:92-95
+
+# The secondary structure may be obtained from Rfam or from papers
+# describing the target RNA. Rosetta accepts dot-bracket notation,
+# with multiple characters supported to represent higher-order
+# pseudoknots.
+
+echo "(((((....((((....))))(((..((((((.[[[[..))).))).)))..(((((....)))))))))).((((....)))).......]]]]." > secstruct
+
+# The target FASTA file may be prepared using Rosetta's RNA tools or,
+# if there is no native PDB structure available, via a text editor.
+
+pdb2fasta 4l81.pdb > target.fasta

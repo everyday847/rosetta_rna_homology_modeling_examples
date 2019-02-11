@@ -1,0 +1,5 @@
+# The following command generates 5 structures; as in the adenine example, 
+# you will likely wish to run multiple parallel jobs. 
+
+stepwise -s starting_puzzle8_chunk.pdb HELIX2.pdb HELIX4.pdb HELIX5.pdb HELIX6.pdb HELIX7.pdb HELIX8.pdb -native 4L81.pdb -fasta target.fasta -save_times -motif_mode -allow_complex_loop_graph true -superimpose_over_all -cycles 5000 -nstruct 5 -use_legacy_stepwise_job_distributor true -score:weights stepwise/rna/rna_res_level_energy4.wts -restore_talaris_behavior -out:file:silent swm_rebuild.out
+

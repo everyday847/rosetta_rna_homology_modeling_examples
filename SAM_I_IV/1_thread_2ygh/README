@@ -1,0 +1,26 @@
+# Because of the large architectural disparity between the SAM I and SAM I/IV
+# riboswitches, we cannot thread-and-minimize the entire scaffold before 
+# culling undesired residues (as in the adenine riboswitch case). Instead, we
+# must cull and renumber first, then thread and minimize.
+# 
+# With a text editor, we take 2ygh.pdb and remove all residues except:
+#
+# A:6-14 A:41-48 A:55-60 A:86-88
+#
+# We rename the resulting structure to starting_puzzle8_chunk.pdb.
+#
+# Additional residues from the P1 helix may be retained -- an additional two
+# base pairs -- and this might be a particularly good idea for SWM simulations,
+# which will increase substantially in expense due to four extra nucleotides
+# to sample even though their conformations are fairly certain.
+#
+# Next, assuming we've stuck with this portion -- identical to the "red part" in
+# Fig. 4 -- we thread on the correct sequence, which involves only one point
+# mutation in a loop and one GC => GU base pair.
+#
+rna_thread -s starting_puzzle8_chunk.pdb -seq aucacgagcggcaaccggugcugau
+
+# and renumber the resulting structure:
+#
+cp threaded.pdb threaded_renumbered.pdb
+renumber_pdb_in_place.py threaded_renumbered.pdb A:3-10 A:21-28 A:45-50 A:67-69

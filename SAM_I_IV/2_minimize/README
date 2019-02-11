@@ -1,0 +1,3 @@
+# Here, we simply minimize the resulting PDB to remove any clashes created by 
+# threading
+rna_minimize -s threaded_renumbered.pdb -score:weights stepwise/rna/rna_res_level_energy4.wts -restore_talaris_behavior

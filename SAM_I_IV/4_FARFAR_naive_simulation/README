@@ -1,0 +1,4 @@
+# The following command generates 50 structures; as in the adenine example, 
+# you will likely wish to run multiple parallel jobs. 
+
+rna_denovo -s threaded_renumbered_minimize.pdb HELIX2.pdb HELIX4.pdb HELIX5.pdb HELIX6.pdb HELIX7.pdb HELIX8.pdb -native 4l81.pdb -fasta target.fasta -secstruct_file secstruct -save_times -allow_complex_loop_graph true -superimpose_over_all -cycles 100000 -nstruct 50 -use_legacy_job_distributor true -score:weights stepwise/rna/rna_res_level_energy4.wts -restore_talaris_behavior -minimize_rna true -out:file:silent farna_rebuild.out

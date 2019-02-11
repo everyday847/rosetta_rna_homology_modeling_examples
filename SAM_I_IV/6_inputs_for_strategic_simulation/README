@@ -1,0 +1,33 @@
+# For our "strategic" simulations, we've decided to "pre-bake" certain parts of
+# the simulation. We essentially identify parts of the structure that merit 
+# modeling but whose structural variations are likely uncorrelated to the fold
+# of the whole molecule -- so we can choose good models for that part of the
+# structure wholly ignorant of the global fold.
+#
+# In particular, good candidates for this simplifying operation are the three
+# GNRA tetraloops that cap P2a, P4, and P5. These tetraloops do not look very
+# likely to be involved in any tertiary contacts (and even if so, GNRA 
+# tetraloops usually assume a fairly stereotyped fold nonetheless). Furthermore,
+# the P2a helix can be affixed to the large template region, 
+# threaded_renumbered_minimize.pdb, thus decreasing the total number of moving
+# "puzzle pieces."
+#
+# We run three short simulations to accomplish this. We run FARFAR simulations
+# to build models of P4 and P5 with affixed tetraloops, and FARFAR has the
+# convenient feature that you can just use the "overall" FASTA file, with an
+# additional flag (-working_res) to indicate the subset of the modeling problem
+# you'd like to solve at the moment. We also run a SWM simulation to add P2a to 
+# threaded_renumbered_minimize.pdb, and this requires a specially written
+# FASTA file.
+
+stepwise -s threaded_renumbered_minimize.pdb HELIX2.pdb -native 4L81.pdb -fasta target_1.fasta -save_times -motif_mode -allow_complex_loop_graph true -superimpose_over_all -cycles 200 -nstruct 50 -use_legacy_stepwise_job_distributor true -score:weights stepwise/rna/rna_res_level_energy4.wts -restore_talaris_behavior -out:file:silent swm_rebuild1.out
+rna_denovo -s HELIX6.pdb -working_res A:53-66 -native 4L81.pdb -fasta target.fasta -save_times -motif_mode -allow_complex_loop_graph true -superimpose_over_all -cycles 10000 -nstruct 50 -use_legacy_job_distributor true -score:weights stepwise/rna/rna_res_level_energy4.wts -restore_talaris_behavior -minimize_rna true -out:file:silent farna_rebuild2.out
+rna_denovo -s HELIX7.pdb -working_res A:73-84 -native 4L81.pdb -fasta target.fasta -save_times -motif_mode -allow_complex_loop_graph true -superimpose_over_all -cycles 10000 -nstruct 50 -use_legacy_job_distributor true -score:weights stepwise/rna/rna_res_level_energy4.wts -restore_talaris_behavior -minimize_rna true -out:file:silent farna_rebuild3.out
+
+# Once you are satisfied with the convergence of the decoys you have generated
+# (these are simple problems; 50-500 should be easily sufficient), extract
+# the lowest scoring decoy for further use:
+extract_lowscore_decoys.py swm_rebuild1.out 1 
+extract_lowscore_decoys.py farna_rebuild2.out 1
+extract_lowscore_decoys.py farna_rebuild3.out 1
+
