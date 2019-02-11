@@ -1,0 +1,53 @@
+# This command will generate 5 structures. The plots in the manuscript for 
+# this target are based on ~500 structures, so you may wish to run 10 
+# simulations in parallel. You can easily set that up by using this very
+# README file:
+#
+# rosetta_submit.py README SWM 100 48 -save_logs
+#
+# will create a directory structure:
+#
+# ./SWM/0
+# ./SWM/1
+# ...
+# ./SWM/9
+#
+# as well as separate files to execute the below command line in each of those
+# subdirectories. These files may be executed via bash *or* submitted to 
+# either PBS or slurm queueing systems with the specified time limit, 48 hours.
+#
+# Once the simulations are over (or, really, in the middle to check on them)
+# you can run
+#
+# easy_cat.py SWM
+#
+# to concatenate the output "silent files" into a single file
+#
+# ./swm_rebuild.out
+
+stepwise -s threaded_minimize_culled.pdb -native 4tzy_target_short.pdb -fasta target_short.fasta -cycles 50 -nstruct 5 -score:weights stepwise/rna/rna_res_level_energy4.wts -restore_talaris_behavior -use_legacy_stepwise_job_distributor -extra_min_res X:25 X:27 X:30 X:32 X:38 X:40 X:42 X:45 X:61 X:63 X:73 X:75 -out:file:silent swm_rebuild.out
+
+
+# [after generating 500 decoys, either by changing nstruct above or using 
+# rosetta_submit.py and easy_cat.py]
+
+extract_lowscore_decoys.py swm_rebuild.out 500
+
+
+# The below will create a FARFAR directory with 500 sub-directories. 
+# Subsequently, it will run fragment assembly in each directory, starting 
+# from a different "seed" PDB, to build the final ensemble of 5000 structures.
+
+mkdir FARFAR
+for ii in {1..500} ; do
+	mkdir FARFAR/$ii
+	rna_denovo -s swm_rebuild.out.$ii.pdb -native 4tzy_target.pdb -fasta target.fasta -minimize_rna true -nstruct 10 -score:weights stepwise/rna/rna_res_level_energy4.wts -restore_talaris_behavior -use_legacy_job_distributor -extra_minimize_res X:25 X:27 X:30 X:32 X:38 X:40 X:42 X:45 X:61 X:63 X:73 X:75 -out:file:silent FARFAR/$ii/threaded_minimize_stepwise_finished_by_farfar.out
+done
+
+
+# The final output can be obtained by:
+
+easy_cat.py FARFAR
+
+# resulting in ./threaded_minimize_stepwise_finished_by_farfar.out (we
+# only provide 50 models worth).

@@ -1,0 +1,2 @@
+rna_minimize -s threaded.pdb -score:weights stepwise/rna/rna_res_level_energy4.wts -restore_talaris_behavior
+renumber_pdb_in_place.py threaded_minimize.pdb X:14-81

@@ -1,0 +1,23 @@
+
+# target.fasta
+# ------------
+# If a native structure has already been determined and you are testing the 
+# validity of this method (or your own extension to it), then you can use the
+# native structure and a Rosetta python script:
+#
+# pdb2fasta.py 4tzy_target.pdb > target.fasta
+#
+# If you are in an actual blind modeling situation, there is no native, so you
+# are able to create the fasta yourself, with whatever chain letter and 
+# residue numbering you prefer.
+#
+#
+# threaded_minimize_culled.pdb
+# ----------------------------
+#
+# Determine what residues need to be rebuilt; in this particular case, they are
+# X:26, X:31, X:39, X:44, X:62, and X:74. In theory a clever command line using
+# sed could probably do the trick, but we've always found it slightly more
+# comfortable and certain to use a text editor.
+
+echo "These steps may be performed manually."
