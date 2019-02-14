@@ -49,5 +49,5 @@ done
 
 easy_cat.py FARFAR
 
-# resulting in ./threaded_minimize_stepwise_finished_by_farfar.out (we
-# only provide 50 models worth).
+# resulting in ./threaded_minimize_stepwise_finished_by_farfar.out (we only 
+# provide 50 models worth).
