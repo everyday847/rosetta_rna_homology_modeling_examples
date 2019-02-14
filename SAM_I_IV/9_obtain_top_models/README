@@ -1,0 +1,11 @@
+# To obtain the top ten best-scoring models from each simulation, we execute 
+# the following Python script. (Note that since the included output 'silent 
+# files' only have 50 models each, this represents a MUCH larger fraction of
+# the generated models than intended, so the results will not be well 
+# converged! Ideally, extract ten models from a large simulation as described 
+# above.)
+
+extract_lowscore_decoys.py farna_rebuild.out 10 
+extract_lowscore_decoys.py swm_rebuild.out 10 
+extract_lowscore_decoys.py farna_rebuild_final.out 10 
+extract_lowscore_decoys.py swm_rebuild_final.out 10
